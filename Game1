@@ -1,0 +1,282 @@
+/************
+			1,猜拳游戏需要菜单提示操作
+			2,人机对战
+			3,机器和机器对战
+			4,机器输啦要有相关的情感表达(
+				连续赢二次,赢机器就要表示是双杀,连续赢五次,超神)
+				輸的机器,输了三次,就有可能发脾气,不完啦,有可能再继续,但必须系统支持计数清零,再战!		
+****************/		
+//随机类
+import java.util.Random; 
+import java.util.Scanner;  
+public class Game_Function{
+	
+	
+	public static void main(String[] args){
+		System.out.println("**********************欢迎来到大曹的猜拳游戏*************************"+"\n");
+		//判断是电脑和电脑猜拳还是电脑和用户猜拳
+		System.out.println("------------1,人机对战------------"+"\n");
+		System.out.println("------------2,电脑对战------------"+"\n");
+		System.out.print("请输入您的操作：");
+		Scanner sc=new Scanner(System.in);
+		int choose=sc.nextInt();
+		boolean flag=true;
+		int count_user=0;
+		int count_computer=0;
+		while(true){
+			switch(choose){
+				case 1:	
+					System.out.println("**********欢迎来到人机对战********"+"\n");
+					while(flag){
+						//从键盘输入
+						Scanner user_fist=new Scanner(System.in);
+						System.out.print("请输入您的出拳：0：代表石头，1：代表剪刀，2：代表布----"+"\n");
+						int User_Fist=user_fist.nextInt();
+						if (User_Fist==0){
+							System.out.println("您的出拳为:石头");
+							System.out.println();
+						}else if(User_Fist==1){
+							System.out.println("您的出拳为:剪刀");
+							System.out.println();
+						}else if(User_Fist==2){
+							System.out.println("您的出拳为:布");
+							
+							System.out.println();
+						}
+						//定义一个数组用来存储电脑的出拳
+						String[] ComPuter=new String[]{"石头","剪刀","布"};
+						// for(int i=0;i<ComPuter.length;i++){
+							// System.out.println(ComPuter[i]);
+						// }
+						//定义随机数
+						Random rad=new Random();
+						//用来接收随机数的下标
+						int index=rad.nextInt(ComPuter.length);
+						//用来接收产生的随机字符串
+						String Computer_Fist=ComPuter[index];
+						System.out.println("电脑的出拳正在加载中.... "+"\n");
+						try {
+								Thread.sleep(1500);
+
+						} catch (InterruptedException e){
+							System.out.println("错误");
+						}
+						System.out.println("电脑的出拳为： "+Computer_Fist+"\n");
+						
+						System.out.println();
+						//判断电脑和用户的出拳
+						if(User_Fist==index){
+							System.out.println("游戏结算中.... "+"\n");
+							try {
+									Thread.sleep(1000);
+
+							} catch (InterruptedException e){
+								System.out.println("错误");
+							}
+							System.out.println("&&&&本次为平局&&&&"+"\n");	
+							int choose1=Public_panduan();
+							//判断是否继续游戏
+							if(choose1==1){
+								continue;
+							}else if(choose1==2){
+								flag=false;
+								return;
+							}else if(choose1==3){
+								choose=2;
+								break;
+							}
+												
+						}else if(((User_Fist==0) && (index==1))||((User_Fist==1) && (index==2))||((User_Fist==2) && (index==0))){
+							System.out.println("游戏结算中.... "+"\n");
+							try {
+									Thread.sleep(1000);
+
+							} catch (InterruptedException e){
+								System.out.println("错误");
+							}
+							System.out.println("&&&&you win&&&&"+"\n");
+							count_user+=1;
+							System.out.println("你已经赢了:"+count_user+":次"+"\n");
+							int choose1=Public_panduan();
+							//判断是否继续游戏
+							if(choose1==1){
+							
+								//判断你赢的次数
+								if(count_user>=3){
+									Random rad1=new Random();
+									int num=rad1.nextInt(2);
+									if (num==0){
+										System.out.println("电脑：大爷不玩了"+"\n");
+										break;
+									}else{
+										count_user=0;
+										System.out.println("你已经赢了三次，次数清零游戏继续"+count_user+"\n");
+										continue;
+									}
+								}
+									
+								continue;
+							}else if(choose1==2){
+								flag=false;
+								return;
+							}else if(choose1==3){
+								choose=2;
+								break;
+							}
+							
+						}else if(((User_Fist==0) && (index==2))||((User_Fist==1) && (index==0))||((User_Fist==2) && (index==1))){
+							System.out.println("游戏结算中.... "+"\n");
+							try {
+									Thread.sleep(1000);
+
+							} catch (InterruptedException e){
+								System.out.println("错误");
+							}
+							System.out.println("&&&&电脑 win&&&&"+"\n");
+							System.out.println();
+							count_computer+=1;
+							System.out.println("电脑已经赢了:"+count_computer+":次"+"\n");
+							int choose1=Public_panduan();
+							
+							//判断是否继续游戏
+							if(choose1==1){
+								//判断电脑赢的次数
+								if(count_computer==2){
+									System.out.println("电脑已经双杀，小老弟你好垃圾啊");
+									System.out.println();
+								}else if(count_computer==5){
+									System.out.println("电脑已经超神，不要怀疑你就是个fw兄弟");
+									count_computer=0;
+								}
+								continue;
+							}else if(choose1==2){
+								flag=false;
+								return;
+							}else if(choose1==3){
+								choose=2;
+								break;
+							}
+						}
+					
+						
+					
+					}
+					break;
+					
+				case 2:	
+					System.out.println("**********欢迎来到电脑对战********"+"\n");
+					while(flag){
+						//定义一个数组用来存储电脑的出拳
+						String[] ComPuter1=new String[]{"石头","剪刀","布"};
+						String[] ComPuter2=new String[]{"石头","剪刀","布"};
+				
+						//定义随机数
+						Random rad2=new Random();
+						//用来接收随机数的下标
+						int index1=rad2.nextInt(ComPuter1.length);
+						System.out.println("电脑1正在出拳中.... "+"\n");
+						try {
+								Thread.sleep(1500);
+
+						} catch (InterruptedException e){
+							System.out.println("错误");
+						}
+						System.out.println("电脑1出的是："+ComPuter1[index1]+"\n");
+						System.out.println("电脑2正在出拳中.... "+"\n");
+						try {
+								Thread.sleep(1500);
+
+						} catch (InterruptedException e){
+								System.out.println("错误");
+						}
+						int index2=rad2.nextInt(ComPuter2.length);
+						System.out.println("电脑2出的是："+ComPuter1[index2]+"\n");
+						
+						if(index1==index2){
+								System.out.println("游戏结算中.... "+"\n");
+								try {
+										Thread.sleep(1000);
+
+								} catch (InterruptedException e){
+									System.out.println("错误");
+								}
+								System.out.println("平局"+"\n");	
+								int choose1=Public_panduan();
+								//判断是否继续游戏
+								if(choose1==1){
+									continue;
+								}else if(choose1==2){
+									flag=false;
+									return;
+								}else if(choose1==3){
+									choose=1;
+									break;
+								}
+								
+						}else if(((index1==0) && (index2==1))||((index1==1) && (index2==2))||((index1==2) && (index2==0))){
+								System.out.println("游戏结算中.... "+"\n");
+								try {
+										Thread.sleep(1000);
+
+								} catch (InterruptedException e){
+									System.out.println("错误");
+								}
+								System.out.println("电脑1 win"+"\n");
+								int choose1=Public_panduan();
+								
+								//判断是否继续游戏
+								if(choose1==1){
+									continue;
+								}else if(choose1==2){
+									flag=false;
+									return;
+								}else if(choose1==3){
+									choose=2;
+									break;
+								}
+								
+						}else if(((index1==0) && (index2==2))||((index1==1) && (index2==0))||((index1==2) && (index2==1))){
+								System.out.println("游戏结算中.... "+"\n");
+								try {
+										Thread.sleep(1000);
+
+								} catch (InterruptedException e){
+									System.out.println("错误");
+								}
+								System.out.println("电脑2 win"+"\n");
+								int choose1=Public_panduan();
+								//判断是否继续游戏
+								if(choose1==1){
+									continue;
+						
+								}else if(choose1==2){
+									flag=false;
+									return;
+								}else if(choose1==3){
+									choose=2;
+									break;
+								}
+						}
+					}
+					break;
+				
+					
+				
+				
+		
+			}
+			
+		}	
+	}
+	public static int Public_panduan(){
+		System.out.println("^^^^是否继续游戏^^^^"+"\n");
+		System.out.println(">>>1,是：2,否 :3,切换模式"+"\n");
+		System.out.print("请输入您的操作<<<: ");
+		Scanner go_on=new Scanner(System.in);
+		int choose1=go_on.nextInt();
+		return choose1;
+		
+		
+	}
+
+}
